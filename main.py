@@ -214,22 +214,22 @@ col2.pyplot(fig)
 
 # Graph 7
 
-# avg_list = []
-# for year in years[6:]:
-#     df = pd.read_csv("Bat_"+year+".csv")
-#     top10_avg = df.nlargest(10,'R')
-#     avg_data = top10_avg['SR'].mean() 
-#     avg_list.append(avg_data)
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    top10_avg = df.nlargest(10,'R')
+    avg_data = top10_avg['SR'].mean() 
+    avg_list.append(avg_data)
 
-# col3.markdown('###### Strike Rate of top 10 batsman')
+col3.markdown('###### Strike Rate of top 10 batsman')
 
-# fig, ax = plt.subplots()
-# ax.plot(years[6:], avg_list, label='Line Graph')
-# ax.set_xlabel('Year')
-# ax.set_ylabel('Cumulative Strike Rate')
-# ax.set_title('Line Graph')
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Strike Rate')
+ax.set_title('Line Graph')
 
-# col3.pyplot(fig)
+col3.pyplot(fig)
 
 # # Grapg 5, 6 and 7 completed
 
