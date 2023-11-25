@@ -236,14 +236,75 @@ col1,col2,col3,col4=st.columns(4,gap="large")
 
 #col1 to select team
 
-team1 = col1.selectbox("Select First Team : ",teams,index=None)
+team1 = col1.selectbox("Select First Team : ",teams)
 
-team2 =col1.selectbox("Select Second Team : ",teams,index=None)
+team2 =col1.selectbox("Select Second Team : ",teams)
 
 # team display
 
 
 #col2 to display the team logo
+
+#col3 to display the total matches
+total_matches = 0
+t1=0
+t2=0
+with open("Matches.csv") as matches :
+    reader = csv.reader(matches)
+    
+    for match in reader:
+        if(team1 is not None and team2 is not None and team1 != team2 and team1 in match[3] and team2 in match[3]):
+            total_matches += 1
+            if(team1 in match[4]):
+                t1 += 1
+            else:
+                t2 +=1
+
+col3.markdown(f'''
+    <div style="display: inline-flex; align-items: center;">
+        <div>
+            <div style="width: 150px; height: 40px; display: flex;
+                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:40px">
+                <center>Total Matches</center>
+            </div>
+            <br>
+            <center>
+            <div style="width: 100px; height: 100px; border-radius: 50%; background-color:#262730; display: flex;
+                        justify-content: center; align-items: center; color: white; font-size: 80px;margin-top:20px">
+                <center><h1> {total_matches}</h1></center>
+            </div>
+            </center>
+        </div>
+        ''',unsafe_allow_html=True)
+
+col4.markdown(f'''
+    <div style="display: inline-flex; align-items: center;">
+        <div style="margin-top=0px;">
+            <div style="width: 100px; height: 40px; display: flex;
+                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px">
+                <center>{team1}</center>
+            </div>
+            <br>
+            <div style="width: 100px; height: 100px; border-radius: 50%; background-color:#262730; display: flex;
+                        justify-content: center; align-items: center; color: white; font-size: 80px;padding-top:0px">
+                <center><h1> {t1}</h1></center>
+            </div>
+        </div>
+        <div style="padding:100px 50px 0px 30px;width:10px;" ><h2> - <h2></div>
+        <div style="margin-top=0px;">
+            <div style="width: 100px; height: 40px; display: flex;
+                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px">
+                <center>{team2}</center>
+            </div>
+            <br>
+            <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #262730; display: flex;
+                        justify-content: center; align-items: center; color: white; font-size: 80px;padding-top:0px">
+                <center><h1> {t2}</h1></center>
+            </div>
+        </div>
+    
+    </div>
+    ''',unsafe_allow_html=True)
 
 
 col1,col2, col3 = st.columns(3,gap="medium")
