@@ -1,6 +1,7 @@
 import streamlit as st
 import csv
 import matplotlib.pyplot as plt
+import pandas as pd
 
 st.set_page_config(page_title="Cricket Worldcup Dashboard",page_icon="	:cricket_bat_and_ball:",layout="wide")
 
@@ -144,10 +145,82 @@ with open("Matches.csv") as file2:
     col2.pyplot(fig)
     
 
-col1,col2,col3 = st.columns(3,gap="medium")
-team_value2 = col1.selectbox("Select a Value",teams,key="first")
-team_value3 = col2.selectbox("Select a Value",teams,key="Second")
-team_value4 = col3.selectbox("Select a Value",teams,key="Third")   
+col1,col2= st.columns(2,gap="medium")
+
+#Third Graph
+
+col1.header("Highest Runscorer in the Perticular Year")
+
+year3=years[6:]
+year3_value = col1.selectbox("Select a Year",year3,key="Third")
+
+filename="Bat_"+year3_value+".csv"
+
+with open(filename) as reader:
+    batsman_data=[]
+    
+    csv_reader=csv.reader(reader)
+    
+    head=csv_reader.__next__()
+    
+    for row in csv_reader:
+        batsman_data.append(row)
+    
+    # print(batsman_data[0][4])
+    top5_run=[]
+    top5_batsman_name=[]
+    for i in range(5):
+        max=0
+        i=0
+        j=0
+        for btsmn in batsman_data :
+            if(int(btsmn[2]) > int(max)):
+                max=btsmn[2]
+                j=i    
+            i=i+1
+        top5_run.append(int(batsman_data[j][2]))
+        top5_batsman_name.append(batsman_data[j][0])
+        batsman_data.remove(batsman_data[j])
+        
+    print(top5_batsman_name)
+    print(top5_run)
+
+   # Plotting the horizontal bar graph
+    fig, ax = plt.subplots(figsize=(7,4))
+    ax.barh(top5_batsman_name, top5_run, color='skyblue')
+    ax.invert_yaxis()
+    ax.invert_xaxis()
+    
+    # Displaying y-labels beside the bars
+    for name,run in zip(top5_batsman_name,top5_run):
+        dis=name+" : "+str(run)
+        ax.text(run, name, str(dis), ha='right', va='center',color="white")
+        
+    ax.set_facecolor('#262730')
+    ax.set_yticklabels([])
+    
+
+
+    ax.set_xlim(800,200)
+    col1.pyplot(fig)
+
+
+
+
+#Fourth Graph
+
+# year_value4 = col2.selectbox("Select a Year",year3,key="fourth")
+# col2.header("Top 5 highest wicket taker in the particular year")
+# filename = "Bowl_"+year_value4
+
+# with open(filename) as reader:
+#     bowler_data = []
+#     df = pd.read_csv(filename)
+#     top5_va
+    
+''
+#Fifth Graph
+# team_value4 = col3.selectbox("Select a Value",teams,key="Fifth")   
         
         
     
