@@ -256,38 +256,36 @@ col1.pyplot(fig)
 
 # # Graph 9
 
-# centuries_list = []
-# for year in years[6:]:
-#     df = pd.read_csv("Bat_"+year+".csv")
-#     num_100 = df.nlargest(10,'100')
-#     cent = num_100['100'].sum() 
-#     centuries_list.append(cent)
+centuries_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    num_100 = df['100'].sum() 
+    centuries_list.append(num_100)
 
-# col2.markdown('###### Number of Centuries')
+col2.markdown('###### Number of Centuries')
 
-# fig, ax = plt.subplots()
-# ax.plot(years[6:], centuries_list, label='Line Graph')
-# ax.set_xlabel('Year')
-# ax.set_ylabel('Number of Centuries')
-# ax.set_title('Line Graph')
+fig, ax = plt.subplots()
+ax.plot(years[6:], centuries_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Number of Centuries')
+ax.set_title('Line Graph')
 
-# col2.pyplot(fig)
+col2.pyplot(fig)
 
-# # Graph 10
+# Graph 10
 
-# centuries_list = []
-# for year in years[6:]:
-#     df = pd.read_csv("Bat_"+year+".csv")
-#     num_100 = df.nlargest(10,'100')
-#     cent = num_100['100'].sum() 
-#     centuries_list.append(cent)
+dot_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bowl_"+year+".csv")
+    dots = df['Dots'].sum() 
+    dot_list.append(dots)
 
-# col2.markdown('###### Number of Centuries')
+col3.markdown('###### Number of Dot Balls')
 
-# fig, ax = plt.subplots()
-# ax.plot(years[6:], centuries_list, label='Line Graph')
-# ax.set_xlabel('Year')
-# ax.set_ylabel('Number of Centuries')
-# ax.set_title('Line Graph')
+fig, ax = plt.subplots()
+ax.plot(years[6:], dot_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Number of Dots')
+ax.set_title('Line Graph')
 
-# col2.pyplot(fig)
+col3.pyplot(fig)
