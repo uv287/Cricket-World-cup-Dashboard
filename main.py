@@ -12,10 +12,9 @@ st.sidebar.markdown("---")
 
 years = []
 teams=[]
+winners = []
 with open('Worldcupwinners.csv', 'r') as file:
     csv_reader = csv.reader(file)
-    
-    winners = []
     
     csv_reader.__next__()
     
@@ -297,9 +296,31 @@ team1 = col1.selectbox("Select First Team : ",teams)
 team2 =col1.selectbox("Select Second Team : ",teams)
 
 # team display
-
-
 #col2 to display the team logo
+
+image_url1= "Flags/"+team1+".png" 
+image_url2= "Flags/"+team2+".png"
+
+# Display images side by side using columns
+col2.write(f'''
+    <div style="display: inline-flex; align-items: center;">
+        <div style="margin-top: 20px">
+            <div style="width:100px; justify-content: center; align-items: center; color: white; font-size: 20px; padding-top: 0px;">
+                <center>{team1}</center>
+            </div>
+            <br>
+            <center><img src={image_url1} alt="{team1}" width="100px"></img></center>
+        </div>
+        <div style="margin-top:20px;margin-left:50px;">
+            <div style="width:100px;font-size:20px;justify-content:center;">
+            <center>{team2}</center>
+            </div>
+            <br>
+            <center><img src={image_url2} width="100px"></img></center>
+        </div>
+    </div>
+     
+    ''', unsafe_allow_html=True)
 
 #col3 to display the total matches
 total_matches = 0
@@ -335,7 +356,7 @@ col3.markdown(f'''
 
 col4.markdown(f'''
     <div style="display: inline-flex; align-items: center;">
-        <div style="margin-top=0px;">
+        <div style="margin-top:0px;">
             <div style="width: 100px; height: 40px; display: flex;
                     justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px">
                 <center>{team1}</center>
@@ -347,7 +368,7 @@ col4.markdown(f'''
             </div>
         </div>
         <div style="padding:100px 50px 0px 30px;width:10px;" ><h2> - <h2></div>
-        <div style="margin-top=0px;">
+        <div style="margin-top:0px;">
             <div style="width: 100px; height: 40px; display: flex;
                     justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px">
                 <center>{team2}</center>
@@ -490,7 +511,7 @@ col1.pyplot(fig)
 #Bowler To Bowler Comaprision
 
 user_bowler=col2.multiselect("Select Bowler you want to Compare : ",bowlers)
-wickets = [[] for _ in range(len(user_batsman))]
+wickets = [[] for _ in range(len(user_bowler))]
 for y in year:
     bat_file="Bowl_"+str(y)+".csv"
     
@@ -509,7 +530,7 @@ for y in year:
         while (0 in check_avail):
             index=check_avail.index(0)
             check_avail[index]=1
-            wickets[index].append(0)  
+            wickets[index].append(0) 
 
 
 fig, ax = plt.subplots(figsize=(7,4))
@@ -519,4 +540,51 @@ for i in range(len(user_bowler)):
 
 ax.legend(loc=0)                
 col2.pyplot(fig)
+
+
+#Journy of Winning team in the perticular Year
+
+selected_year = st.slider("Select an Year", min_value=1999, max_value=2019 ,step=4,value=1999)
+
+print(years)
+index=years[6:].index(str(selected_year))
+winner = winners[6+index]
+print(winner)
+
+st.markdown(f"# Journey of the {winner} Team in {selected_year}")
+
+with open("Matches.csv") as match_obj:
+    
+    match_reader=csv.reader(match_obj)
+    header= match_reader.__next__()
+    
+    table_markdown=f"""
+                <center> 
+                <table style="border: 0px solid ">
+                <tr style="border:2px solid; border-color:white; margin-bottom:20px">
+                    <th>Sr. No </th>
+                    <th>Date</th>
+                    <th>Ground</th>
+                    <th>Teams</th>
+                    <th>Result</th>
+                </tr>
+                """
+    i=1
+    for match in match_reader:
+        if(str(selected_year) in match[1] and winner in match[3]):
+            table_markdown += f""" 
+                <tr>
+                    <td>{i} </td>
+                    <td>{match[1]}</td>
+                    <td>{match[2]}</td>
+                    <td>{match[3]}</td>
+                    <td>{match[4]}</td>
+                </tr>
+                """
+            i=i+1
+    table_markdown += """</table> </center>"""
+    
+    st.markdown(table_markdown, unsafe_allow_html=True)
+            
+
 
