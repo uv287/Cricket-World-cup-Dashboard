@@ -1,6 +1,7 @@
 import streamlit as st
 import csv
 import matplotlib.pyplot as plt
+import pandas as pd
 
 st.set_page_config(page_title="Cricket Worldcup Dashboard",page_icon="	:cricket_bat_and_ball:",layout="wide")
 
@@ -144,15 +145,36 @@ with open("Matches.csv") as file2:
     col2.pyplot(fig)
     
 
-col1,col2,col3 = st.columns(3,gap="medium")
+col1,col2 = st.columns(2,gap="medium")
+
 team_value2 = col1.selectbox("Select a Value",teams,key="first")
-team_value3 = col2.selectbox("Select a Value",teams,key="Second")
-team_value4 = col3.selectbox("Select a Value",teams,key="Third")   
-        
-        
+
+# Graph 4
+
+year_value3 = col2.selectbox("Select a year",years[6:],key="Second")
+
+df = pd.read_csv("Bowl_"+year_value3+".csv")
+
+top5_values = df.nlargest(5,'W')
+
+st.title('Horizontal Bar Graph for bowlers')
+
+fig, ax = plt.subplots()
+ax.barh(top5_values['Player'], top5_values['W'], color='skyblue')
+ax.set_xlabel('Wickets')
+ax.set_ylabel('Player')
+ax.set_title('Horizontal Bar Graph')
+
+# Display the plot using Streamlit
+st.pyplot(fig)        
+
+# Graph 4 over
+
+# Graph 5 and 6
+
+col1,col2 = st.columns(2,gap="medium")
     
-    
-    
+ # Graph 5    
     
     
     
