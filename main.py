@@ -305,25 +305,16 @@ print(image_url1)
 image_url2= "Flags/"+team2+".png"
 
 # Display images side by side using columns
-col2.write(f'''
-    <div style="display: inline-flex; align-items: center;">
-        <div style="margin-top: 20px">
-            <div style="width:100px; justify-content: center; align-items: center; color: white; font-size: 20px; padding-top: 0px;">
-                <center>{team1}</center>
-            </div>
-            <br>
-            <center><img src={image_url1}></center>
-        </div>
-        <div style="margin-top:20px;margin-left:50px;">
-            <div style="width:100px;font-size:20px;justify-content:center;">
-            <center>{team2}</center>
-            </div>
-            <br>
-            <center><img src={image_url2}></center>
-        </div>
-    </div>
-     
-    ''', unsafe_allow_html=True)
+c1, c2 ,c3 = col2.columns(3,gap="small")
+
+markdown_content1 = f"<center><div style='margin-top:20px; font-size:20px'>{team1}</div></center>"
+c1.markdown(markdown_content1, unsafe_allow_html=True)
+c1.image(image_url1,width=100)
+markdown_content2 = f"<div style='margin:70px 30px; font-size:20px'>V/S</div>"
+c2.markdown(markdown_content2, unsafe_allow_html=True)
+markdown_content3= f"<center><div style='margin-top:20px; font-size:20px'>{team2}</div></center>"
+c3.markdown(markdown_content3, unsafe_allow_html=True)
+c3.image(image_url2,width=100)
 
 #col3 to display the total matches
 total_matches = 0
@@ -341,44 +332,46 @@ with open("Matches.csv") as matches :
                 t2 +=1
 
 col3.markdown(f'''
+    <center>
     <div style="display: inline-flex; align-items: center;">
         <div>
             <div style="width: 150px; height: 40px; display: flex;
-                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:40px">
+                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:30px">
                 <center>Total Matches</center>
             </div>
             <br>
             <center>
             <div style="width: 100px; height: 100px; border-radius: 50%; background-color:#262730; display: flex;
-                        justify-content: center; align-items: center; color: white; font-size: 80px;margin-top:20px">
+                        justify-content: center; align-items: center; color: white; font-size: 80px;margin-top:-15px;padding:0px;">
                 <center><h1> {total_matches}</h1></center>
             </div>
             </center>
         </div>
+        </center>
         ''',unsafe_allow_html=True)
 
 col4.markdown(f'''
     <div style="display: inline-flex; align-items: center;">
         <div style="margin-top:0px;">
             <div style="width: 100px; height: 40px; display: flex;
-                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px">
+                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px;margin-top:-10px;">
                 <center>{team1}</center>
             </div>
             <br>
             <div style="width: 100px; height: 100px; border-radius: 50%; background-color:#262730; display: flex;
-                        justify-content: center; align-items: center; color: white; font-size: 80px;padding-top:0px">
+                        justify-content: center; align-items: center; color: white; font-size: 80px;padding-top:0px;margin-top:-30px;">
                 <center><h1> {t1}</h1></center>
             </div>
         </div>
-        <div style="padding:100px 50px 0px 30px;width:10px;" ><h2> - <h2></div>
+        <div style="padding:70px 50px 0px 30px;width:10px;" ><h2> - <h2></div>
         <div style="margin-top:0px;">
             <div style="width: 100px; height: 40px; display: flex;
-                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px">
+                    justify-content: center; align-items: center; color: white; font-size: 20px;padding-top:0px;margin-top:-10px">
                 <center>{team2}</center>
             </div>
             <br>
             <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #262730; display: flex;
-                        justify-content: center; align-items: center; color: white; font-size: 80px;padding-top:0px">
+                        justify-content: center; align-items: center; color: white; font-size: 80px;padding-top:0px;margin-top:-30px">
                 <center><h1> {t2}</h1></center>
             </div>
         </div>
