@@ -231,28 +231,28 @@ ax.set_title('Line Graph')
 
 col3.pyplot(fig)
 
-# # Grapg 5, 6 and 7 completed
+# Grapg 5, 6 and 7 completed
 
-# col1, col2, col3 = st.columns(3,gap="medium")
+col1, col2, col3 = st.columns(3,gap="medium")
 
-# # Graph 8
+# Graph 8
 
-# avg_list = []
-# for year in years[6:]:
-#     df = pd.read_csv("Bowl_"+year+".csv")
-#     top10_avg = df.nlargest(10,'W')
-#     avg_data = top10_avg['Econ'].mean() 
-#     avg_list.append(avg_data)
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bowl_"+year+".csv")
+    top10_avg = df.nlargest(10,'W')
+    avg_data = top10_avg['Econ'].mean() 
+    avg_list.append(avg_data)
 
-# col1.markdown('###### Cumulative Economy of top 10 bowlers')
+col1.markdown('###### Cumulative Economy of top 10 bowlers')
 
-# fig, ax = plt.subplots()
-# ax.plot(years[6:], avg_list, label='Line Graph')
-# ax.set_xlabel('Year')
-# ax.set_ylabel('Cumulative Economy')
-# ax.set_title('Line Graph')
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Economy')
+ax.set_title('Line Graph')
 
-# col1.pyplot(fig)
+col1.pyplot(fig)
 
 # # Graph 9
 
