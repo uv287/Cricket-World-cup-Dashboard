@@ -33,7 +33,7 @@ with open('Worldcupwinners.csv', 'r') as file:
 
 col1,col2=st.columns(2)
 
-col1.header("chart of match win by team")
+col1.header("Cricket Team Performance Distribution")
 
 #taking vlaue from the employee
 with open("Match_percentage.csv") as file1:
@@ -44,7 +44,8 @@ with open("Match_percentage.csv") as file1:
     for row in csv_reader:
         teams.append(row[0])
     
-    team_value = col1.selectbox("Select a Value",teams)
+    print(teams)
+    team_value = col1.selectbox("Select a Value",teams,index=7)
     team_data=[]
     file1.seek(1)
     
@@ -64,8 +65,9 @@ with open("Match_percentage.csv") as file1:
             pie_team_label.append(header[i])
     
     fig1, ax = plt.subplots(figsize=(7,4))
-    ax.pie(pie_team_data, labels=pie_team_label,shadow=True,wedgeprops={"linewidth": 2, "edgecolor": "#262730"}, startangle=90,labeldistance=1.05,textprops={'color': 'white'})
+    ax.pie(pie_team_data,autopct='%1.1f%%',wedgeprops={"linewidth": 2, "edgecolor": "#262730"}, startangle=180,textprops={'color': 'white'},pctdistance=1.20)
     ax.axis('equal')
+    ax.legend(labels=pie_team_label, loc=0)
     circle = plt.Circle((0, 0), 0.6, color='#262730')
     ax.add_artist(circle)
     ax.set_facecolor('#111')
@@ -127,7 +129,7 @@ with open("Matches.csv") as file2:
         
     #print(team_performance)
     
-    width=0.3
+    width=0.2
     multiplier=0
     x = range(len(teams))
     
@@ -137,7 +139,7 @@ with open("Matches.csv") as file2:
         offset = width * i
         ax.bar([pos + offset for pos in x], [row[i] for row in team_performance], width, label=r,)
     
-    ax.set_xticks([pos + (width * len(result)-1.1) for pos in x])
+    ax.set_xticks([pos + (width * len(result)-0.5) for pos in x])
     ax.set_xticklabels(teams,rotation=90)
     ax.legend()
     col2.pyplot(fig)
@@ -146,7 +148,7 @@ col1,col2= st.columns(2,gap="medium")
 
 #Third Graph
 
-col1.header("Highest Runscorer in the Perticular Year")
+col1.header("Top 5 Highest Run Scorer In Perticular Every Year")
 
 year3=years[6:]
 year3_value = col1.selectbox("Select a Year",year3,key="Third")
@@ -184,7 +186,7 @@ with open(filename) as reader:
 
    # Plotting the horizontal bar graph
     fig, ax = plt.subplots(figsize=(7,4))
-    ax.barh(top5_batsman_name, top5_run, color='skyblue')
+    ax.barh(top5_batsman_name, top5_run, color='Orange')
     ax.invert_yaxis()
     ax.invert_xaxis()
     
@@ -204,7 +206,7 @@ with open(filename) as reader:
 
 # Graph 4
 
-col2.header('Horizontal Bar Graph for bowlers')
+col2.header('Top 5 Highest Wicket tacker In Perticular Year')
 
 year_value3 = col2.selectbox("Select a year",years[6:],key="Second")
 
@@ -261,7 +263,7 @@ for year in years[6:]:
 col2.markdown('#### Number of Centuries')
 
 fig, ax = plt.subplots()
-ax.plot(years[6:], centuries_list, label='Line Graph')
+ax.plot(years[6:], centuries_list, label='Line Graph',color="Orange")
 ax.set_xlabel('Year')
 ax.set_ylabel('Number of Centuries')
 
@@ -279,7 +281,7 @@ for year in years[6:]:
 col3.markdown('#### Strike Rate of top 10 batsman')
 
 fig, ax = plt.subplots()
-ax.plot(years[6:], avg_list, label='Line Graph')
+ax.plot(years[6:], avg_list, label='Line Graph',color="red")
 ax.set_xlabel('Year')
 ax.set_ylabel('Cumulative Strike Rate')
 
@@ -298,7 +300,8 @@ team2 =col1.selectbox("Select Second Team : ",teams)
 # team display
 #col2 to display the team logo
 
-image_url1= "Flags/"+team1+".png" 
+image_url1= "Flags/"+team1+".png"
+print(image_url1)
 image_url2= "Flags/"+team2+".png"
 
 # Display images side by side using columns
@@ -309,14 +312,14 @@ col2.write(f'''
                 <center>{team1}</center>
             </div>
             <br>
-            <center><img src={image_url1} alt="{team1}" width="100px"></img></center>
+            <center><img src={image_url1}></center>
         </div>
         <div style="margin-top:20px;margin-left:50px;">
             <div style="width:100px;font-size:20px;justify-content:center;">
             <center>{team2}</center>
             </div>
             <br>
-            <center><img src={image_url2} width="100px"></img></center>
+            <center><img src={image_url2}></center>
         </div>
     </div>
      
@@ -398,7 +401,7 @@ for year in years[6:]:
 col1.markdown('#### Cumulative average of top 10 bowlers')
 
 fig, ax = plt.subplots()
-ax.plot(years[6:], avg_list, label='Line Graph')
+ax.plot(years[6:], avg_list, label='Line Graph',color="Green")
 ax.set_xlabel('Year')
 ax.set_ylabel('Cumulative Average')
 
@@ -416,7 +419,7 @@ for year in years[6:]:
 col2.markdown('#### Cumulative Economy of top 10 bowlers')
 
 fig, ax = plt.subplots()
-ax.plot(years[6:], avg_list, label='Line Graph')
+ax.plot(years[6:], avg_list, label='Line Graph',color="Brown")
 ax.set_xlabel('Year')
 ax.set_ylabel('Cumulative Economy')
 
@@ -433,7 +436,7 @@ for year in years[6:]:
 col3.markdown('#### Number of Dot Balls')
 
 fig, ax = plt.subplots()
-ax.plot(years[6:], dot_list, label='Line Graph')
+ax.plot(years[6:], dot_list, label='Line Graph',color="violet")
 ax.set_xlabel('Year')
 ax.set_ylabel('Number of Dots')
 
@@ -470,6 +473,9 @@ for year in years[6:]:
     
 batsmans.sort()
 bowlers.sort()
+
+col1.header("Batsman to Batsman Comparision")
+
 user_batsman=col1.multiselect("Select Batsman you want to Compare : ",batsmans)
 
 #Preaparing data from the graph to display Comparision
@@ -509,6 +515,8 @@ col1.pyplot(fig)
 
 
 #Bowler To Bowler Comaprision
+
+col2.header("Bowler to Bowler Comparision")
 
 user_bowler=col2.multiselect("Select Bowler you want to Compare : ",bowlers)
 wickets = [[] for _ in range(len(user_bowler))]
