@@ -232,6 +232,62 @@ col2.pyplot(fig)
 
 # Graph 5, 6 and 7
 
+col1,col2, col3 = st.columns(3,gap="medium")
+ # Graph 5    
+
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    top10_avg = df.nlargest(10,'R')
+    avg_data = top10_avg['Avg'].mean() 
+    avg_list.append(avg_data)
+
+col1.markdown('#### Cumulative average of top 10 batsman')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Average')
+
+col1.pyplot(fig)
+
+# Graph 6    
+
+centuries_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    num_100 = df['100'].sum() 
+    centuries_list.append(num_100)
+
+col2.markdown('#### Number of Centuries')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], centuries_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Number of Centuries')
+
+col2.pyplot(fig)
+
+# Graph 7
+
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    top10_avg = df.nlargest(10,'R')
+    avg_data = top10_avg['SR'].mean() 
+    avg_list.append(avg_data)
+
+col3.markdown('#### Strike Rate of top 10 batsman')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Strike Rate')
+
+col3.pyplot(fig)
+
+# Grapg 5, 6 and 7 completed
+
 col1,col2,col3,col4=st.columns(4,gap="large")
 
 #col1 to select team
@@ -306,62 +362,7 @@ col4.markdown(f'''
     </div>
     ''',unsafe_allow_html=True)
 
-
-col1,col2, col3 = st.columns(3,gap="medium")
- # Graph 5    
-
-avg_list = []
-for year in years[6:]:
-    df = pd.read_csv("Bat_"+year+".csv")
-    top10_avg = df.nlargest(10,'R')
-    avg_data = top10_avg['Avg'].mean() 
-    avg_list.append(avg_data)
-
-col1.markdown('#### Cumulative average of top 10 batsman')
-
-fig, ax = plt.subplots()
-ax.plot(years[6:], avg_list, label='Line Graph')
-ax.set_xlabel('Year')
-ax.set_ylabel('Cumulative Average')
-
-col1.pyplot(fig)
-
-# Graph 6    
-
-centuries_list = []
-for year in years[6:]:
-    df = pd.read_csv("Bat_"+year+".csv")
-    num_100 = df['100'].sum() 
-    centuries_list.append(num_100)
-
-col2.markdown('#### Number of Centuries')
-
-fig, ax = plt.subplots()
-ax.plot(years[6:], centuries_list, label='Line Graph')
-ax.set_xlabel('Year')
-ax.set_ylabel('Number of Centuries')
-
-col2.pyplot(fig)
-
-# Graph 7
-
-avg_list = []
-for year in years[6:]:
-    df = pd.read_csv("Bat_"+year+".csv")
-    top10_avg = df.nlargest(10,'R')
-    avg_data = top10_avg['SR'].mean() 
-    avg_list.append(avg_data)
-
-col3.markdown('#### Strike Rate of top 10 batsman')
-
-fig, ax = plt.subplots()
-ax.plot(years[6:], avg_list, label='Line Graph')
-ax.set_xlabel('Year')
-ax.set_ylabel('Cumulative Strike Rate')
-
-col3.pyplot(fig)
-
-# Grapg 5, 6 and 7 completed
+#team comparison over
 
 col1, col2, col3 = st.columns(3,gap="medium")
 
