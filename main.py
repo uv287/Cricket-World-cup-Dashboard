@@ -64,8 +64,8 @@ with open("Match_percentage.csv") as file1:
             pie_team_data.append(temp)
             pie_team_label.append(header[i])
     
-    fig1, ax = plt.subplots(figsize=(8,6))
-    ax.pie(pie_team_data, labels=pie_team_label, autopct='%1.1f%%',shadow=True,wedgeprops={"linewidth": 2, "edgecolor": "#262730"}, startangle=90,labeldistance=1.05,textprops={'color': 'white'})
+    fig1, ax = plt.subplots(figsize=(7,4))
+    ax.pie(pie_team_data, labels=pie_team_label,shadow=True,wedgeprops={"linewidth": 2, "edgecolor": "#262730"}, startangle=90,labeldistance=1.05,textprops={'color': 'white'})
     ax.axis('equal')
     circle = plt.Circle((0, 0), 0.6, color='#262730')
     ax.add_artist(circle)
@@ -132,16 +132,22 @@ with open("Matches.csv") as file2:
     multiplier=0
     x = range(len(teams))
     
-    fig, ax = plt.subplots(layout='constrained')
+    fig, ax = plt.subplots(layout='constrained',figsize=(7,4))
     
     for i, r in enumerate(result):
         offset = width * i
-        ax.bar([pos + offset for pos in x], [row[i] for row in team_performance], width, label=r)
+        ax.bar([pos + offset for pos in x], [row[i] for row in team_performance], width, label=r,)
     
-    ax.set_xticks([pos + (width * len(result) / 2) for pos in x])
+    ax.set_xticks([pos + (width * len(result)-1.1) for pos in x])
     ax.set_xticklabels(teams,rotation=90)
+    ax.legend()
     col2.pyplot(fig)
     
+
+col1,col2,col3 = st.columns(3,gap="medium")
+team_value2 = col1.selectbox("Select a Value",teams,key="first")
+team_value3 = col2.selectbox("Select a Value",teams,key="Second")
+team_value4 = col3.selectbox("Select a Value",teams,key="Third")   
         
         
     
