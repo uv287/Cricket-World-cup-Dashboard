@@ -323,26 +323,23 @@ fig, ax = plt.subplots()
 ax.plot(years[6:], avg_list, label='Line Graph')
 ax.set_xlabel('Year')
 ax.set_ylabel('Cumulative Average')
-ax.set_title('Line Graph')
 
 col1.pyplot(fig)
 
 # Graph 6    
 
-avg_list = []
+centuries_list = []
 for year in years[6:]:
-    df = pd.read_csv("Bowl_"+year+".csv")
-    top10_avg = df.nlargest(10,'W')
-    avg_data = top10_avg['Avg'].mean() 
-    avg_list.append(avg_data)
+    df = pd.read_csv("Bat_"+year+".csv")
+    num_100 = df['100'].sum() 
+    centuries_list.append(num_100)
 
-col2.markdown('#### Cumulative average of top 10 bowlers')
+col2.markdown('#### Number of Centuries')
 
 fig, ax = plt.subplots()
-ax.plot(years[6:], avg_list, label='Line Graph')
+ax.plot(years[6:], centuries_list, label='Line Graph')
 ax.set_xlabel('Year')
-ax.set_ylabel('Cumulative Average')
-ax.set_title('Line Graph')
+ax.set_ylabel('Number of Centuries')
 
 col2.pyplot(fig)
 
@@ -361,7 +358,6 @@ fig, ax = plt.subplots()
 ax.plot(years[6:], avg_list, label='Line Graph')
 ax.set_xlabel('Year')
 ax.set_ylabel('Cumulative Strike Rate')
-ax.set_title('Line Graph')
 
 col3.pyplot(fig)
 
@@ -370,6 +366,23 @@ col3.pyplot(fig)
 col1, col2, col3 = st.columns(3,gap="medium")
 
 # Graph 8
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bowl_"+year+".csv")
+    top10_avg = df.nlargest(10,'W')
+    avg_data = top10_avg['Avg'].mean() 
+    avg_list.append(avg_data)
+
+col1.markdown('#### Cumulative average of top 10 bowlers')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Average')
+
+col1.pyplot(fig)
+
+# # Graph 9
 
 avg_list = []
 for year in years[6:]:
@@ -378,31 +391,12 @@ for year in years[6:]:
     avg_data = top10_avg['Econ'].mean() 
     avg_list.append(avg_data)
 
-col1.markdown('#### Cumulative Economy of top 10 bowlers')
+col2.markdown('#### Cumulative Economy of top 10 bowlers')
 
 fig, ax = plt.subplots()
 ax.plot(years[6:], avg_list, label='Line Graph')
 ax.set_xlabel('Year')
 ax.set_ylabel('Cumulative Economy')
-ax.set_title('Line Graph')
-
-col1.pyplot(fig)
-
-# # Graph 9
-
-centuries_list = []
-for year in years[6:]:
-    df = pd.read_csv("Bat_"+year+".csv")
-    num_100 = df['100'].sum() 
-    centuries_list.append(num_100)
-
-col2.markdown('#### Number of Centuries')
-
-fig, ax = plt.subplots()
-ax.plot(years[6:], centuries_list, label='Line Graph')
-ax.set_xlabel('Year')
-ax.set_ylabel('Number of Centuries')
-ax.set_title('Line Graph')
 
 col2.pyplot(fig)
 
@@ -420,6 +414,108 @@ fig, ax = plt.subplots()
 ax.plot(years[6:], dot_list, label='Line Graph')
 ax.set_xlabel('Year')
 ax.set_ylabel('Number of Dots')
-ax.set_title('Line Graph')
 
 col3.pyplot(fig)
+
+#graph for comaprision of the two player
+
+col1,col2 = st.columns(2,gap="large")
+
+batsmans=[]
+bowlers =[]
+
+for year in years[6:]:
+    bat_file="Bat_"+str(year)+".csv"
+    bowl_file="Bowl_"+str(year)+".csv"
+    
+    #batsmans data from the diffreant file
+    with open(bat_file) as bat_obj:
+        bat_reader=csv.reader(bat_obj)
+        bat_reader.__next__()
+        
+        for name in bat_reader:
+            if(name[0] not in batsmans):
+                batsmans.append(name[0])
+
+    #bowlers data from the file
+    with open(bowl_file) as bowl_obj:
+        bowl_reader=csv.reader(bowl_obj)
+        bowl_reader.__next__()
+        
+        for name in bowl_reader:
+            if(name[0] not in bowlers):
+                bowlers.append(name[0])
+    
+batsmans.sort()
+bowlers.sort()
+user_batsman=col1.multiselect("Select Batsman you want to Compare : ",batsmans)
+
+#Preaparing data from the graph to display Comparision
+
+year=years[6:]
+
+runs = [[] for _ in range(len(user_batsman))]
+for y in year:
+    bat_file="Bat_"+str(y)+".csv"
+    
+    with open(bat_file) as bat_obj:
+        bat_reader=csv.reader(bat_obj)
+        bat_reader.__next__()
+        #to check pericular yer batman played or not?
+        check_avail = [0 for _ in range(len(user_batsman))]
+        for batsdata in bat_reader:
+            if(batsdata[0] in user_batsman):
+                index=user_batsman.index(batsdata[0])
+                runs[index].append(int(batsdata[2]))
+                check_avail[index]=1
+                print(batsdata[0])
+        
+        #if not then based on that put 0 in that year
+        while (0 in check_avail):
+            index=check_avail.index(0)
+            check_avail[index]=1
+            runs[index].append(0)  
+
+
+fig, ax = plt.subplots(figsize=(7,4))
+
+for i in range(len(user_batsman)):
+    ax.plot(years[6:], runs[i], label=user_batsman[i])
+
+ax.legend(loc=0)                
+col1.pyplot(fig)
+
+
+#Bowler To Bowler Comaprision
+
+user_bowler=col2.multiselect("Select Bowler you want to Compare : ",bowlers)
+wickets = [[] for _ in range(len(user_batsman))]
+for y in year:
+    bat_file="Bowl_"+str(y)+".csv"
+    
+    with open(bat_file) as bowl_obj:
+        bowl_reader=csv.reader(bowl_obj)
+        bowl_reader.__next__()
+        #to check pericular yer bowler played or not?
+        check_avail = [0 for _ in range(len(user_bowler))]
+        for bowlerdata in bowl_reader:
+            if(bowlerdata[0] in user_bowler):
+                index=user_bowler.index(bowlerdata[0])
+                wickets[index].append(int(bowlerdata[4]))
+                check_avail[index]=1
+        
+        #if not then based on that put 0 in that year
+        while (0 in check_avail):
+            index=check_avail.index(0)
+            check_avail[index]=1
+            wickets[index].append(0)  
+
+
+fig, ax = plt.subplots(figsize=(7,4))
+
+for i in range(len(user_bowler)):
+    ax.plot(years[6:], wickets[i], label=user_bowler[i])
+
+ax.legend(loc=0)                
+col2.pyplot(fig)
+
