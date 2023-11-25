@@ -11,7 +11,7 @@ st.sidebar.title(":blue[Cricket Worldcup winner]")
 st.sidebar.markdown("---")
 
 years = []
-
+teams=[]
 with open('Worldcupwinners.csv', 'r') as file:
     csv_reader = csv.reader(file)
     
@@ -37,7 +37,6 @@ col1,col2=st.columns(2)
 col1.header("chart of match win by team")
 
 #taking vlaue from the employee
-teams=[]
 with open("Match_percentage.csv") as file1:
     csv_reader = csv.reader(file1)
     
@@ -143,7 +142,6 @@ with open("Matches.csv") as file2:
     ax.set_xticklabels(teams,rotation=90)
     ax.legend()
     col2.pyplot(fig)
-    
 
 col1,col2= st.columns(2,gap="medium")
 
@@ -205,27 +203,162 @@ with open(filename) as reader:
     col1.pyplot(fig)
 
 
+# Graph 4
 
+col2.header('Horizontal Bar Graph for bowlers')
 
-#Fourth Graph
+year_value3 = col2.selectbox("Select a year",years[6:],key="Second")
 
-# year_value4 = col2.selectbox("Select a Year",year3,key="fourth")
-# col2.header("Top 5 highest wicket taker in the particular year")
-# filename = "Bowl_"+year_value4
+df = pd.read_csv("Bowl_"+year_value3+".csv")
 
-# with open(filename) as reader:
-#     bowler_data = []
-#     df = pd.read_csv(filename)
-#     top5_va
-    
-''
-#Fifth Graph
-# team_value4 = col3.selectbox("Select a Value",teams,key="Fifth")   
+top5_values = df.nlargest(5,'W')
+
+fig, ax = plt.subplots(figsize=(7,4))
+ax.barh(top5_values['Player'], top5_values['W'], color='skyblue')
+ax.set_xlim(10,35)
+ax.invert_yaxis()
+
+for name,wickets in zip(top5_values['Player'],top5_values['W']):
+        dis=name+" : "+str(wickets)
+        ax.text(wickets, name, str(dis), ha='left', va='center',color="white")
         
-        
-    
-    
-    
-    
-    
-    
+ax.set_facecolor('#262730')
+ax.set_yticklabels([])
+
+# Display the plot using Streamlit
+col2.pyplot(fig)        
+
+# Graph 4 over
+
+# Graph 5, 6 and 7
+
+col1,col2,col3,col4=st.columns(4,gap="large")
+
+#col1 to select team
+
+team1 = col1.selectbox("Select First Team : ",teams,index=None)
+
+team2 =col1.selectbox("Select Second Team : ",teams,index=None)
+
+# team display
+
+
+#col2 to display the team logo
+
+
+col1,col2, col3 = st.columns(3,gap="medium")
+ # Graph 5    
+
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    top10_avg = df.nlargest(10,'R')
+    avg_data = top10_avg['Avg'].mean() 
+    avg_list.append(avg_data)
+
+col1.markdown('#### Cumulative average of top 10 batsman')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Average')
+ax.set_title('Line Graph')
+
+col1.pyplot(fig)
+
+# Graph 6    
+
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bowl_"+year+".csv")
+    top10_avg = df.nlargest(10,'W')
+    avg_data = top10_avg['Avg'].mean() 
+    avg_list.append(avg_data)
+
+col2.markdown('#### Cumulative average of top 10 bowlers')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Average')
+ax.set_title('Line Graph')
+
+col2.pyplot(fig)
+
+# Graph 7
+
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    top10_avg = df.nlargest(10,'R')
+    avg_data = top10_avg['SR'].mean() 
+    avg_list.append(avg_data)
+
+col3.markdown('#### Strike Rate of top 10 batsman')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Strike Rate')
+ax.set_title('Line Graph')
+
+col3.pyplot(fig)
+
+# Grapg 5, 6 and 7 completed
+
+col1, col2, col3 = st.columns(3,gap="medium")
+
+# Graph 8
+
+avg_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bowl_"+year+".csv")
+    top10_avg = df.nlargest(10,'W')
+    avg_data = top10_avg['Econ'].mean() 
+    avg_list.append(avg_data)
+
+col1.markdown('#### Cumulative Economy of top 10 bowlers')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], avg_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Cumulative Economy')
+ax.set_title('Line Graph')
+
+col1.pyplot(fig)
+
+# # Graph 9
+
+centuries_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bat_"+year+".csv")
+    num_100 = df['100'].sum() 
+    centuries_list.append(num_100)
+
+col2.markdown('#### Number of Centuries')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], centuries_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Number of Centuries')
+ax.set_title('Line Graph')
+
+col2.pyplot(fig)
+
+# Graph 10
+
+dot_list = []
+for year in years[6:]:
+    df = pd.read_csv("Bowl_"+year+".csv")
+    dots = df['Dots'].sum() 
+    dot_list.append(dots)
+
+col3.markdown('#### Number of Dot Balls')
+
+fig, ax = plt.subplots()
+ax.plot(years[6:], dot_list, label='Line Graph')
+ax.set_xlabel('Year')
+ax.set_ylabel('Number of Dots')
+ax.set_title('Line Graph')
+
+col3.pyplot(fig)
